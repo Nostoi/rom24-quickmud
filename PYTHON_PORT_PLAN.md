@@ -502,13 +502,14 @@ TASKS:
   - acceptance_criteria: `P` reset places object inside the correct container instance when multiple exist; matches C behavior on midgaard.are sample
   - references: C src/db.c:load_resets; DOC Rom2.4.doc reset rules; ARE area/midgaard.are §#RESETS
   - estimate: M; risk: medium
-- [P1] Support `#SPECIALS` section to wire spec_funs from areas
+- ✅ [P1] Support `#SPECIALS` section to wire spec_funs from areas — done 2025-09-13
   - rationale: ROM areas bind `spec_fun` entries to mob/room prototypes
   - files: mud/loaders/area_loader.py (add handler), mud/loaders/specials_loader.py (parser), mud/spec_funs.py (registration)
   - tests: tests/test_area_specials.py asserts mapping and invocation via run_npc_specs
   - acceptance_criteria: at least one known SPECIAL from a canonical area maps to a registered Python spec_fun; test asserts registration
   - references: C src/db.c:new_load_area() (SPECIALS parsing); DOC doc/area.txt §#SPECIALS
-  EVIDENCE: PY mud/loaders/area_loader.py; PY mud/loaders/specials_loader.py; TEST tests/test_area_specials.py
+  EVIDENCE: PY mud/loaders/area_loader.py:L1-L30; PY mud/loaders/specials_loader.py:L1-L41; PY mud/spec_funs.py:L1-L120
+  EVIDENCE: TEST tests/test_area_specials.py::{test_load_specials_sets_spec_fun_on_mob_prototypes,test_run_npc_specs_invokes_registered_function}
 - [P2] Coverage ≥80% for area_format_loader
   - acceptance_criteria: coverage report ≥80% across loader modules
 NOTES:
