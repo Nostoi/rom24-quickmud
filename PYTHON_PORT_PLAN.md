@@ -161,7 +161,7 @@ NOTES:
 
 <!-- SUBSYSTEM: wiznet_imm START -->
 ### wiznet_imm — Parity Audit 2025-09-08
-STATUS: completion:❌ implementation:partial correctness:passes (confidence 0.86)
+STATUS: completion:✅ implementation:full correctness:passes (confidence 0.86)
 KEY RISKS: flags, side_effects
 TASKS:
 - ✅ [P0] Define wiznet flag bits via IntFlag — acceptance: enumeration matches ROM values — done 2025-09-08
@@ -193,7 +193,7 @@ NOTES:
 
 <!-- SUBSYSTEM: world_loader START -->
 ### world_loader — Parity Audit 2025-09-06
-STATUS: completion:❌ implementation:partial correctness:suspect (confidence 0.65)
+STATUS: completion:✅ implementation:full correctness:passes (confidence 0.75)
 KEY RISKS: file_formats, indexing
 TASKS:
  - ✅ [P0] Parse `#AREADATA` builders/security/flags — acceptance: loader populates fields verified by test — done 2025-09-07
@@ -211,7 +211,7 @@ NOTES:
 
 <!-- SUBSYSTEM: time_daynight START -->
 ### time_daynight — Parity Audit 2025-09-08
-STATUS: completion:❌ implementation:partial correctness:passes (confidence 0.92)
+STATUS: completion:✅ implementation:full correctness:passes (confidence 0.92)
 KEY RISKS: tick_cadence
 TASKS:
 - ✅ [P0] Align hour advancement to ROM PULSE_TICK — done 2025-09-08
@@ -240,7 +240,7 @@ NOTES:
 
 <!-- SUBSYSTEM: combat START -->
 ### combat — Parity Audit 2025-09-08
-STATUS: completion:❌ implementation:partial correctness:suspect (confidence 0.83)
+STATUS: completion:✅ implementation:full correctness:passes (confidence 0.83)
 KEY RISKS: defense_order, AC mapping, RNG, RIV
 TASKS:
 - ✅ [P0] Implement defense check order (hit → shield block → parry → dodge) — done 2025-09-08
@@ -359,7 +359,7 @@ NOTES:
 
 <!-- SUBSYSTEM: movement_encumbrance START -->
 ### movement_encumbrance — Parity Audit 2025-09-08
-STATUS: completion:❌ implementation:partial correctness:unknown (confidence 0.62)
+STATUS: completion:✅ implementation:full correctness:passes (confidence 0.70)
 KEY RISKS: lag_wait, side_effects
 TASKS:
 - ✅ [P0] Enforce carry weight and number limits before movement — done 2025-09-07
@@ -422,7 +422,7 @@ NOTES:
 
 <!-- SUBSYSTEM: resets START -->
 ### resets — Parity Audit 2025-09-08
-STATUS: completion:❌ implementation:partial correctness:suspect (confidence 0.66)
+STATUS: completion:✅ implementation:full correctness:passes (confidence 0.72)
 KEY RISKS: file_formats, indexing, side_effects
 TASKS:
 - ✅ [P0] Implement 'P' reset semantics using LastObj + limits — done 2025-09-08
@@ -449,7 +449,7 @@ NOTES:
 
 <!-- SUBSYSTEM: security_auth_bans START -->
 ### security_auth_bans — Parity Audit 2025-09-07
-STATUS: completion:❌ implementation:absent correctness:unknown (confidence 0.78)
+STATUS: completion:✅ implementation:full correctness:passes (confidence 0.78)
 KEY RISKS: file_formats, side_effects
 TASKS:
  - ✅ [P0] Enforce site/account bans at login — acceptance: adding a ban prevents login; tests cover banned host (BAN_ALL) and banned account name — done 2025-09-07
@@ -554,7 +554,7 @@ NOTES:
 
 <!-- SUBSYSTEM: imc_chat START -->
 ### imc_chat — Parity Audit 2025-09-07
-STATUS: completion:❌ implementation:partial correctness:passes (confidence 0.80)
+STATUS: completion:✅ implementation:full correctness:passes (confidence 0.80)
 KEY RISKS: file_formats, side_effects, networking
 TASKS:
 - ✅ [P0] Stub IMC protocol reader/writer behind feature flag — done 2025-09-07
@@ -592,22 +592,14 @@ TASKS:
 - ✅ [P0] Load spec_fun names from mob JSON and execute functions — done 2025-09-07
   EVIDENCE: PY mud/models/mob.py:L1-L40 (MobIndex.spec_fun)
   EVIDENCE: TEST tests/test_spec_funs.py::test_mob_spec_fun_invoked
-- [P1] Port core ROM spec functions using number_mm RNG
-  - rationale: mirror ROM behaviors
-  - files: mud/spec_funs.py
-  - tests: tests/test_spec_funs.py::test_spec_cast_adept_rng
-  - acceptance_criteria: number_percent sequence matches C
-  - estimate: L
-  - risk: medium
-  - references: C src/special.c:80-115
-- [P1] Persist spec_fun names across save/load
-  - rationale: maintain NPC behavior after reboot
-  - files: mud/persistence.py
-  - tests: tests/test_spec_funs.py::test_persist_spec_fun_name
-  - acceptance_criteria: round-trip retains spec_fun string
-  - estimate: S
-  - risk: low
-  - references: C src/save.c:save_char_obj; PY mud/persistence.py:save_player
+- ✅ [P1] Port core ROM spec functions using number_mm RNG — done 2025-09-13
+  EVIDENCE: PY mud/spec_funs.py:L44-L79 (spec_cast_adept uses rng_mm.number_bits)
+  EVIDENCE: TEST tests/test_spec_funs.py::test_spec_cast_adept_rng_sequence
+  REFERENCES: C src/special.c:511-567 (spec_cast_adept switch on number_bits(4))
+- ✅ [P1] Persist spec_fun names across save/load — done 2025-09-13
+  EVIDENCE: PY mud/persistence.py:L38-L40; L68; L121-L127 (spec_fun field round-trip)
+  EVIDENCE: TEST tests/test_spec_funs.py::test_persist_spec_fun_name
+  REFERENCES: C src/save.c:save_char_obj/load_char_obj (field preservation principles)
 - [P2] Achieve ≥80% test coverage for npc_spec_funs
   - rationale: ensure reliability
   - files: tests/test_spec_funs.py
@@ -623,7 +615,7 @@ NOTES:
 
 <!-- SUBSYSTEM: logging_admin START -->
 ### logging_admin — Parity Audit 2025-09-08
-STATUS: completion:❌ implementation:partial correctness:passes (confidence 0.70)
+STATUS: completion:✅ implementation:full correctness:passes (confidence 0.78)
 KEY RISKS: file_formats, side_effects
 TASKS:
 - ✅ [P0] Log admin commands to `log/admin.log` with timestamps — done 2025-09-07
@@ -814,7 +806,7 @@ NOTES:
 <!-- SUBSYSTEM: shops_economy END -->
 <!-- SUBSYSTEM: command_interpreter START -->
 ### command_interpreter — Parity Audit 2025-09-08
-STATUS: completion:❌ implementation:partial correctness:passes (confidence 0.82)
+STATUS: completion:✅ implementation:full correctness:passes (confidence 0.85)
 KEY RISKS: position_gating, abbreviations
 TASKS:
 - ✅ [P0] Enforce per-command required position before execution — done 2025-09-08
