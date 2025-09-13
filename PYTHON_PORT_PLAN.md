@@ -496,12 +496,15 @@ TASKS:
 - ✅ [P0] Enforce `area.lst` `$` sentinel and duplicate-entry rejection — done 2025-09-07
   - evidence: PY mud/loaders/__init__.py (sentinel); PY mud/loaders/area_loader.py (duplicate vnum)
   - tests: tests/test_world.py::test_area_list_requires_sentinel
-- [P1] Preserve `#RESETS` semantics for nested `P` (put) into spawned containers
+- ✅ [P1] Preserve `#RESETS` semantics for nested `P` (put) into spawned containers — done 2025-09-13
   - rationale: ROM allows multiple identical vnums; loader must track specific instance linkage
   - files: mud/spawning/reset_handler.py (use per-instance identifiers instead of vnum map), tests/test_spawning.py (golden for nested containers)
   - acceptance_criteria: `P` reset places object inside the correct container instance when multiple exist; matches C behavior on midgaard.are sample
   - references: C src/db.c:load_resets; DOC Rom2.4.doc reset rules; ARE area/midgaard.are §#RESETS
   - estimate: M; risk: medium
+  EVIDENCE: PY mud/spawning/reset_handler.py:L1-L142 (LastObj tracking; per-instance container linkage)
+  EVIDENCE: TEST tests/test_spawning.py::test_reset_P_uses_last_container_instance_when_multiple
+  EVIDENCE: ARE area/midgaard.are §#RESETS (desk/safe in room 3142)
 - [P1] Support `#SPECIALS` section to wire spec_funs from areas
   - rationale: ROM areas bind `spec_fun` entries to mob/room prototypes
   - files: mud/loaders/area_loader.py (add handler), mud/loaders/specials_loader.py (parser), mud/spec_funs.py (registration)
@@ -863,13 +866,14 @@ TASKS:
   EVIDENCE: PY mud/game_loop.py:L73-L112; PY mud/config.py:get_pulse_violence; PY mud/models/character.py (daze)
   EVIDENCE: TEST tests/test_game_loop_wait_daze.py::test_wait_and_daze_decrement_on_violence_pulse
 
-- [P1] Schedule weather/time/resets in ROM order with separate pulse counters
+- ✅ [P1] Schedule weather/time/resets in ROM order with separate pulse counters — done 2025-09-13
   - rationale: ROM maintains independent pulse counters for violence and tick; align ordering
   - files: mud/game_loop.py, mud/config.py
   - tests: tests/test_game_loop_order.py asserts order on point pulses; existing weather tests preserved via non-strict mode
   - acceptance_criteria: violence then time→weather→reset on point pulses; separate counters
   - references: C src/update.c:L1161-L1189 (update_handler cadence)
-  EVIDENCE: PY mud/game_loop.py (separate counters + ordering); PY mud/config.py:GAME_LOOP_STRICT_POINT
+  EVIDENCE: PY mud/game_loop.py:L73-L116 (separate counters + ordering)
+  EVIDENCE: PY mud/config.py:L38-L65, L78-L92 (get_pulse_* and GAME_LOOP_STRICT_POINT)
   EVIDENCE: TEST tests/test_game_loop_order.py::test_weather_time_reset_order_on_point_pulse
 
 NOTES:
